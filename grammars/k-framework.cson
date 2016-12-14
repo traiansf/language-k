@@ -1,0 +1,640 @@
+fileTypes: [
+  "k"
+]
+name: "K-Framework"
+patterns: [
+  {
+    patterns: [
+      {
+        include: "#comments"
+      }
+    ]
+  }
+  {
+    begin: "^\\s*(require)\\b"
+    beginCaptures:
+      "1":
+        name: "keyword.other.import.k-framework"
+    end: "\\s*$"
+    name: "meta.require.k-framework"
+    patterns: [
+      {
+        include: "#string"
+      }
+    ]
+  }
+  {
+    begin: "\\b(module)\\s+([a-zA-Z0-9_-]+)\\s*$"
+    beginCaptures:
+      "1":
+        name: "keyword.other.module.k-framework"
+      "2":
+        name: "entity.name.type.module.k-framework"
+    end: "\\b(end(?:\\s)*module)\\s*$"
+    endCaptures:
+      "1":
+        name: "keyword.other.endmodule.k-framework"
+    name: "meta.module.k-framework"
+    patterns: [
+      {
+        include: "#imports"
+      }
+      {
+        include: "#comments"
+      }
+      {
+        include: "#syntax"
+      }
+      {
+        include: "#macro"
+      }
+      {
+        include: "#configuration"
+      }
+      {
+        include: "#rule"
+      }
+      {
+        include: "#context"
+      }
+      {
+        include: "#define"
+      }
+    ]
+  }
+]
+repository:
+  "args-attr":
+    begin: "([a-zA-Z_-])(\\()"
+    beginCaptures:
+      "1":
+        name: "entity.other.attribute-name.k-framework"
+      "2":
+        name: "punctuation.definition.arguments.begin.attribute.k-framework"
+    end: "(\\))"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.arguments.end.attribute.k-framework"
+    name: "meta.attribute.k-framework"
+    patterns: [
+      {
+        begin: "(?=[a-zA-Z0-9#\\\"])"
+        end: "(,)|(?=\\))"
+        endCaptures:
+          "1":
+            name: "punctuation.separator.arguments.attribute.k-framework"
+        name: "meta.attribute.argument.k-framework"
+        patterns: [
+          {
+            include: "#number"
+          }
+          {
+            include: "#syntax-term-nonterminal"
+          }
+          {
+            include: "#syntax-term-terminal"
+          }
+          {
+            include: "#string"
+          }
+        ]
+      }
+    ]
+  attr:
+    begin: "(?=[a-zA-Z])"
+    end: "(,)|(?=\\])"
+    endCaptures:
+      "1":
+        name: "punctuation.separator.parameters.attributes.k-framework"
+    name: "meta.attribute.k-framework"
+    patterns: [
+      {
+        include: "#latex-attr"
+      }
+      {
+        include: "#empty-attr"
+      }
+      {
+        include: "#args-attr"
+      }
+    ]
+  "attr-args":
+    captures:
+      "1":
+        name: "constant.numeric.integer.decimal.k-framework"
+      "2":
+        name: "constant.language.attribute.k-framework"
+      "3":
+        name: "punctuation.separator.arguments.k-framework"
+      "4":
+        name: "constant.numeric.integer.decimal.k-framework"
+      "5":
+        name: "constant.language.attribute.k-framework"
+    match: "(([0-9]+)|([\\w-_]+))(?:(,)(([0-9]+)|([\\w-_]+)))*"
+    name: "meta.attributes.arguments.k-framework"
+  attrs:
+    begin: "(\\[)"
+    beginCaptures:
+      "1":
+        name: "punctuation.definition.parameters.begin.attributes.k-framework"
+    end: "(\\])"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.parameters.end.attributes.k-framework"
+    name: "meta.attributes.k-framework"
+    patterns: [
+      {
+        include: "#attr"
+      }
+    ]
+  br:
+    captures:
+      "1":
+        name: "punctuation.definition.tag.br.k-framework"
+      "2":
+        name: "entity.name.tag.br.k-framework"
+    match: "(\\<(br)\\/\\>)"
+    name: "punctuation.definition.tag"
+  cell:
+    begin: "(<([\\w\\-]+)\\s*([^>]+)?>)"
+    beginCaptures:
+      "1":
+        name: "punctuation.definition.tag.begin.cell.k-framework"
+      "2":
+        name: "entity.name.tag.cell.k-framework"
+      "3":
+        patterns: [
+          {
+            include: "#cell-attr"
+          }
+        ]
+    end: "(</(\\2)>)"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.tag.end.cell.k-framework"
+      "2":
+        name: "entity.name.tag.cell.k-framework"
+    name: "meta.configuration.cell.k-framework"
+    patterns: [
+      {
+        include: "#br"
+      }
+      {
+        include: "#comments"
+      }
+      {
+        include: "#cell"
+      }
+      {
+        include: "#value"
+      }
+      {
+        include: "#syntax-term-nonterminal"
+      }
+      {
+        include: "#syntax-term-terminal"
+      }
+    ]
+  "cell-attr":
+    begin: "([a-z]+)\\s*(=)\\s*"
+    end: "(?=[a-z\\>])"
+    name: "meta.cell.attribute"
+    patterns: [
+      {
+        include: "#string"
+      }
+    ]
+  comments:
+    patterns: [
+      {
+        captures:
+          "1":
+            name: "punctuation.definition.comment.line.k-framework"
+        match: "(//)[^@].*$"
+        name: "comment.line.k-framework"
+      }
+      {
+        captures:
+          "1":
+            name: "punctuation.definition.comment.line.documentation.k-framework"
+          "2":
+            name: "text.tex.latex"
+            patterns: [
+              {
+                include: "text.tex.latex"
+              }
+            ]
+        match: "(//@)(.*)$"
+        name: "comment.line.documentation.k-framework"
+      }
+      {
+        begin: "(/\\*)[^@]"
+        beginCaptures:
+          "1":
+            name: "punctuation.definition.comment.block.begin.k-framework"
+        end: "(\\*/)"
+        endCaptures:
+          "1":
+            name: "punctuation.definition.comment.block.end.k-framework"
+        name: "comment.block.k-framework"
+      }
+      {
+        begin: "(/\\*@)"
+        beginCaptures:
+          "1":
+            name: "punctuation.definition.comment.block.documentation.begin.k-framework"
+        contentName: "text.tex.latex"
+        end: "(\\*/)"
+        endCaptures:
+          "1":
+            name: "punctuation.definition.comment.block.documentation.end.k-framework"
+        name: "comment.block.documentation.k-framework"
+        patterns: [
+          {
+            include: "text.tex.latex"
+          }
+        ]
+      }
+    ]
+  configuration:
+    begin: "(configuration)"
+    beginCaptures:
+      "1":
+        name: "keyword.control.def.configuration.k-framework"
+    end: "\\b(?=(rule|syntax|configuration|context|macro|endmodule|define))"
+    name: "meta.configuration.k-framework"
+    patterns: [
+      {
+        include: "#comments"
+      }
+      {
+        include: "#cell"
+      }
+    ]
+  context:
+    begin: "(context)"
+    beginCaptures:
+      "1":
+        name: "keyword.control.def.context.k-framework"
+      "2":
+        name: "entity.name.context.k-framework"
+    end: "\\b(?=(rule|syntax|configuration|context|macro|endmodule|define))"
+    name: "meta.context.k-framework"
+    patterns: [
+      {
+        include: "#comments"
+      }
+      {
+        match: "when"
+        name: "keyword.control.def.context.when"
+      }
+      {
+        match: "where"
+        name: "keyword.control.def.context.where"
+      }
+      {
+        include: "#attrs"
+      }
+      {
+        include: "#rewrites"
+      }
+      {
+        include: "#rule-cell"
+      }
+    ]
+  define:
+    begin: "(define)"
+    beginCaptures:
+      "1":
+        name: "keyword.control.def.define.k-framework"
+      "2":
+        name: "entity.name.define.k-framework"
+    end: "\\b(?=(rule|syntax|configuration|context|macro|endmodule|define))"
+    name: "meta.define.k-framework"
+    patterns: [
+      {
+        include: "#comments"
+      }
+      {
+        match: "when"
+        name: "keyword.control.def.define.when"
+      }
+      {
+        match: "where"
+        name: "keyword.control.def.define.where"
+      }
+      {
+        include: "#rule-cell"
+      }
+      {
+        include: "#attrs"
+      }
+      {
+        include: "#rewrites"
+      }
+    ]
+  "empty-attr":
+    captures:
+      "1":
+        name: "entity.other.attribute-name.k-framework"
+    match: "([a-zA-Z_-])(?!\\()"
+    name: "meta.attribute.k-framework"
+  "functor-args":
+    name: "meta.terminal.functor.arguments.k-framework"
+    patterns: [
+      {
+        match: ","
+        name: "punctuation.separator.functor.arguments.k-framework"
+      }
+      {
+        include: "#value"
+      }
+    ]
+  imports:
+    captures:
+      "1":
+        name: "keyword.other.import.k-framework"
+      "2":
+        name: "entity.other.type.module.k-framework"
+    match: "\\b(imports)\\s+(\\#?[a-zA-Z0-9_-]+)\\s*$"
+    name: "meta.import.k-framework"
+  "latex-attr":
+    begin: "(latex)(\\()"
+    beginCaptures:
+      "1":
+        name: "entity.other.attribute-name.latex.k-framework"
+      "2":
+        name: "punctuation.definition.arguments.begin.attribute.k-framework"
+    contentName: "text.tex.latex"
+    end: "(\\))"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.arguments.end.attribute.k-framework"
+    name: "meta.attribute.latex.k-framework"
+    patterns: [
+      {
+        include: "text.tex.latex"
+      }
+    ]
+  macro:
+    begin: "\\b(macro)\\s+"
+    beginCaptures:
+      "1":
+        name: "keyword.control.def.macro.k-framework"
+    end: "\\b(?=(rule|syntax|configuration|context|macro|endmodule|define))"
+    name: "meta.structure.macro.k-framework"
+    patterns: [
+      {
+        match: "="
+        name: "punctuation.definition.macro.output.k-framework"
+      }
+      {
+        include: "#rewrites"
+      }
+    ]
+  number:
+    match: "[0-9]+"
+    name: "constant.numeric.integer.decimal.k-framework"
+  rewrites:
+    name: "meta.rewrite.k-framework"
+    patterns: [
+      {
+        include: "#comments"
+      }
+      {
+        match: "\\=\\>"
+        name: "punctuation.definition.function.arrow.rewrite.k-framework"
+      }
+      {
+        match: "\\~\\>"
+        name: "punctuation.separator.continuation.arrow.next.k-framework"
+      }
+      {
+        include: "#value"
+      }
+    ]
+  rule:
+    begin: "(rule)(?:\\s*(\\[)([^\\]]+)(\\])\\s*(:))?"
+    beginCaptures:
+      "1":
+        name: "keyword.control.def.rule.k-framework"
+      "2":
+        name: "punctuation.definition.entity.name.rule.begin.k-framework"
+      "3":
+        name: "entity.name.rule.k-framework"
+      "4":
+        name: "punctuation.definition.entity.name.rule.end.k-framework"
+      "5":
+        name: "punctuation.definition.entity.rule.k-framework"
+    end: "(?=(?:\\b(rule|syntax|configuration|context|macro|endmodule|define)))"
+    name: "meta.structure.rule.k-framework"
+    patterns: [
+      {
+        include: "#comments"
+      }
+      {
+        match: "when"
+        name: "keyword.control.def.rule.when"
+      }
+      {
+        match: "where"
+        name: "keyword.control.def.rule.where"
+      }
+      {
+        include: "#br"
+      }
+      {
+        include: "#rule-cell"
+      }
+      {
+        include: "#attrs"
+      }
+      {
+        include: "#rewrites"
+      }
+    ]
+  "rule-cell":
+    begin: "(<([\\w\\-]+)>)\\s*(\\.\\.\\.)?"
+    beginCaptures:
+      "1":
+        name: "punctuation.definition.tag.begin.cell.k-framework"
+      "2":
+        name: "entity.name.tag.cell.k-framework"
+      "3":
+        name: "punctuation.definition.parameters.placeholder.before.k-framework"
+    end: "(\\.\\.\\.)?\\s*(</(\\2)>)"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.parameters.placeholder.after.k-framework"
+      "2":
+        name: "punctuation.definition.tag.end.cell.k-framework"
+      "3":
+        name: "entity.name.tag.cell.k-framework"
+    name: "meta.rule.cell.k-framework"
+    patterns: [
+      {
+        include: "#br"
+      }
+      {
+        include: "#rule-cell"
+      }
+      {
+        include: "#rewrites"
+      }
+    ]
+  string:
+    begin: "\""
+    end: "\""
+    name: "string.quoted.double.k-framework"
+    patterns: [
+      {
+        match: "\\\\"
+        name: "constant.character.escape.k-framework"
+      }
+    ]
+  syntax:
+    begin: "\\b(syntax)\\s+(\\#?[A-Z][A-Za-z]*)\\s*(\\:\\:\\=)"
+    beginCaptures:
+      "1":
+        name: "keyword.control.def.syntax.k-framework"
+      "2":
+        name: "entity.name.type.syntax.k-framework"
+      "3":
+        name: "keyword.operator.syntax.definition.k-framework"
+    end: "(?=(?:^\\s*(?:(rule|syntax|configuration|context|macro|endmodule|define))))"
+    name: "meta.structure.syntax.k-framework"
+    patterns: [
+      {
+        include: "#syntax-term"
+      }
+    ]
+  "syntax-term":
+    begin: "\\s*(?:(\\|)|(\\>)|(\\<))?"
+    beginCaptures:
+      "1":
+        name: "keyword.operator.syntax.definition.alternation.k-framework"
+      "2":
+        name: "keyword.operator.syntax.definition.alternation.precedence.lower.k-framework"
+      "3":
+        name: "keyword.operator.syntax.definition.alternation.precedence.higher.k-framework"
+    end: "(?:(?=[\\|\\>\\<])|^(?=(?:\\s*(?:(rule|syntax|configuration|context|macro|endmodule|define)))))"
+    endCaptures:
+      "1":
+        name: "punctuation.definition.arguments.begin.attributes.k-framework"
+      "2":
+        name: "meta.attributes.k-framework"
+        patterns: [
+          {
+            include: "#attrs"
+          }
+        ]
+      "3":
+        name: "punctuation.definition.arguments.end.attributes.k-framework"
+    name: "meta.structure.syntax.alternative.k-framework"
+    patterns: [
+      {
+        include: "#comments"
+      }
+      {
+        include: "#attrs"
+      }
+      {
+        include: "#syntax-term-nonterminal"
+      }
+      {
+        include: "#syntax-term-terminal"
+      }
+    ]
+  "syntax-term-nonterminal":
+    match: "\\#?[A-Z][a-z0-9_-]*"
+    name: "entity.other.type.syntax.k-framework"
+  "syntax-term-terminal":
+    patterns: [
+      {
+        begin: "(?!</)(?!:[A-Z])(?!_[\\s:])(?!\\=\\>)(?!\\~\\>)([\\,\\|]|(?:(?:['.*\\-/+`:\\^_=?\\><]+)|(?:(?=\\b)[a-z]))[a-zA-Z0-9_\\-]*)(?<!\\,\\_)(\\()"
+        beginCaptures:
+          "1":
+            name: "string.other.syntax.terminal.k-framework"
+          "2":
+            name: "punctuation.definition.parameters.begin.terminal.k-framework"
+        end: "(\\))"
+        endCaptures:
+          "1":
+            name: "punctuation.definition.parameters.end.terminal.k-framework"
+        name: "meta.terminal.functor.k-framework"
+        patterns: [
+          {
+            include: "#functor-args"
+          }
+        ]
+      }
+      {
+        include: "#syntax-term-terminal-basic"
+      }
+    ]
+  "syntax-term-terminal-basic":
+    patterns: [
+      {
+        match: "\\.[A-Z][a-zA-Z0-9_-]+"
+        name: "entity.other.type.syntax.unit.k-framework"
+      }
+      {
+        captures:
+          "1":
+            name: "string.other.syntax.terminal.k-framework"
+        match: "(?!</)(?!:[A-Z])(?!_[\\s:])(?!\\=\\>)(?!\\~\\>)([\\,\\|]|(?:(?:[_'.*`\\-/+:\\^=?\\|><]+)|(?:(?=\\b)[a-z]))[a-zA-Z0-9_\\-]*)(?<!\\,\\_)(?<!\\()"
+        name: "meta.terminal.k-framework"
+      }
+      {
+        name: "meta.terminal.k-framework"
+        patterns: [
+          {
+            include: "#string"
+            name: "string.quoted.double.syntax.terminal.k-framework"
+          }
+        ]
+      }
+    ]
+  value:
+    patterns: [
+      {
+        match: "HOLE"
+        name: "constant.language.hole.k-framework"
+      }
+      {
+        captures:
+          "1":
+            name: "variable.other.predefined.program.k-framework"
+          "2":
+            name: "punctuation.separator.sort.k-framework"
+          "3":
+            patterns: [
+              {
+                include: "#syntax-term-nonterminal"
+              }
+            ]
+        match: "(\\$PGM)(?:(:)\\s*([A-Z][a-zA-Z0-9_-]+))?"
+      }
+      {
+        captures:
+          "1":
+            name: "variable.parameter.k-framework"
+          "2":
+            name: "punctuation.separator.sort.k-framework"
+          "3":
+            patterns: [
+              {
+                include: "#syntax-term-nonterminal"
+              }
+            ]
+        match: "([A-Z_][a-zA-Z0-9_\\-]*'?)(?:(:)\\s*([A-Z][a-zA-Z0-9_-]+))?"
+      }
+      {
+        match: "\\s\\.\\s"
+        name: "entity.other.type.syntax.unit.generic.k-framework"
+      }
+      {
+        include: "#syntax-term-terminal"
+      }
+    ]
+scopeName: "source.k-framework"
